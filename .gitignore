@@ -1,0 +1,44 @@
+# ── Personal / sensitive ──────────────────────────────────────
+*.pdf
+Varsha_Chouhan_Resume*
+Resume*
+
+# ── Assessment brief (not ours to redistribute) ───────────────
+project.txt
+project context.txt
+HAOS Remote*.docx
+Untitled
+
+# ── Large media (link from README if needed) ──────────────────
+*.mp4
+*.mov
+deliverables.zip
+
+# ── Node / Playwright ─────────────────────────────────────────
+node_modules/
+.playwright-mcp/
+playwright-report/
+test-results/
+.cache/
+
+# ── OS / editor ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# ── Home Assistant runtime artifacts (if you ever copy /config back) ─
+home-assistant.log
+home-assistant_v2.db*
+*.db-shm
+*.db-wal
+.storage/
+.cloud/
+secrets.yaml
+known_devices.yaml
+
+# ── Misc ──────────────────────────────────────────────────────
+*.log

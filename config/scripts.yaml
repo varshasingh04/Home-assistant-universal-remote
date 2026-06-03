@@ -1,0 +1,57 @@
+
+select_source:
+  alias: "Select Source"
+  icon: mdi:remote-tv
+  fields:
+    source:
+      description: "Source name matching an option in input_select.active_source"
+      example: "Apple TV"
+      required: true
+      selector:
+        text:
+  sequence:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.active_source
+      data:
+        option: "{{ source }}"
+
+    - service: input_boolean.turn_on
+      target:
+        entity_id:
+          - input_boolean.tv_power
+          - input_boolean.avr_power
+  
+    - delay: "00:00:01"
+
+volume_up:
+  alias: "Volume Up"
+  icon: mdi:volume-plus
+  sequence:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.avr_volume
+      data:
+        value: >
+          {{ [states('input_number.avr_volume') | int + 5, 100] | min }}
+
+volume_down:
+  alias: "Volume Down"
+  icon: mdi:volume-minus
+  sequence:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.avr_volume
+      data:
+        value: >
+          {{ [states('input_number.avr_volume') | int - 5, 0] | max }}
+
+power_off_all:
+  alias: "Power Off All"
+  icon: mdi:power
+  sequence:
+    - service: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.tv_power
+          - input_boolean.avr_power

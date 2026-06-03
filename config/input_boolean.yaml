@@ -1,0 +1,7 @@
+tv_power:
+  name: TV Power
+  icon: mdi:television
+
+avr_power:
+  name: AVR Power
+  icon: mdi:speaker

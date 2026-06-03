@@ -1,0 +1,258 @@
+title: Universal Remote
+views:
+
+  - title: Remote Control
+    path: remote
+    icon: mdi:remote-tv
+    cards:
+
+
+      - type: markdown
+        content: >
+          ## 📺 {{ states('input_select.active_source') }}
+
+          **TV:** {{ states('input_boolean.tv_power') | upper }}
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          **AVR:** {{ states('input_boolean.avr_power') | upper }}
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          **Vol:** {{ states('input_number.avr_volume') | int }}%
+
+      # ── Power controls ─────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: TV Power
+            icon: mdi:television
+            entity: input_boolean.tv_power
+            tap_action:
+              action: toggle
+            show_state: true
+
+          - type: button
+            name: AVR Power
+            icon: mdi:speaker
+            entity: input_boolean.avr_power
+            tap_action:
+              action: toggle
+            show_state: true
+
+          - type: button
+            name: Power Off All
+            icon: mdi:power
+            icon_color: red
+            tap_action:
+              action: call-service
+              service: script.power_off_all
+
+      # ── Source selector (dropdown) ─────────────────────────────
+      - type: entities
+        title: Source Selection
+        entities:
+          - entity: input_select.active_source
+            name: Active Source
+
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Apple TV
+            icon: mdi:apple
+            entity: binary_sensor.apple_tv_active
+            tap_action:
+              action: call-service
+              service: script.select_source
+              service_data:
+                source: "Apple TV"
+
+          - type: button
+            name: Chromecast
+            icon: mdi:cast
+            entity: binary_sensor.chromecast_active
+            tap_action:
+              action: call-service
+              service: script.select_source
+              service_data:
+                source: "Chromecast"
+
+          - type: button
+            name: PlayStation 5
+            icon: mdi:sony-playstation
+            entity: binary_sensor.playstation_5_active
+            tap_action:
+              action: call-service
+              service: script.select_source
+              service_data:
+                source: "PlayStation 5"
+
+          - type: button
+            name: Fire TV
+            icon: mdi:amazon
+            entity: binary_sensor.fire_tv_stick_active
+            tap_action:
+              action: call-service
+              service: script.select_source
+              service_data:
+                source: "Fire TV Stick"
+
+      # ── Volume ─────────────────────────────────────────────────
+      - type: entities
+        title: Volume
+        entities:
+          - entity: input_number.avr_volume
+            name: AVR Volume
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Vol -
+            icon: mdi:volume-minus
+            tap_action:
+              action: call-service
+              service: script.volume_down
+
+          - type: button
+            name: Mute
+            icon: mdi:volume-off
+            tap_action:
+              action: call-service
+              service: input_number.set_value
+              service_data:
+                entity_id: input_number.avr_volume
+                value: 0
+
+          - type: button
+            name: Vol +
+            icon: mdi:volume-plus
+            tap_action:
+              action: call-service
+              service: script.volume_up
+
+      # ── Transport controls ──────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: "Prev"
+            icon: mdi:skip-previous
+
+          - type: button
+            name: "Pause"
+            icon: mdi:pause
+
+          - type: button
+            name: "Play"
+            icon: mdi:play
+
+          - type: button
+            name: "Next"
+            icon: mdi:skip-next
+
+          - type: button
+            name: "Stop"
+            icon: mdi:stop
+
+      # ── Navigation D-pad ───────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: ""
+            icon: mdi:blank
+          - type: button
+            name: ""
+            icon: mdi:arrow-up-bold
+          - type: button
+            name: ""
+            icon: mdi:blank
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: ""
+            icon: mdi:arrow-left-bold
+          - type: button
+            name: OK
+            icon: mdi:checkbox-blank-circle-outline
+          - type: button
+            name: ""
+            icon: mdi:arrow-right-bold
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: ""
+            icon: mdi:blank
+          - type: button
+            name: ""
+            icon: mdi:arrow-down-bold
+          - type: button
+            name: ""
+            icon: mdi:blank
+
+      # ── Menu shortcuts ─────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Home
+            icon: mdi:home
+
+          - type: button
+            name: Back
+            icon: mdi:arrow-left
+
+          - type: button
+            name: Menu
+            icon: mdi:menu
+
+
+  - title: Debug / Status
+    path: debug
+    icon: mdi:bug
+    cards:
+
+      # ── Raw entity states ──────────────────────────────────────
+      - type: entities
+        title: "Core Entity States"
+        show_header_toggle: false
+        entities:
+          - entity: input_select.active_source
+            name: Active Source
+          - entity: input_boolean.tv_power
+            name: TV Power
+          - entity: input_boolean.avr_power
+            name: AVR Power
+          - entity: input_number.avr_volume
+            name: AVR Volume
+
+      # ── Template sensor states ─────────────────────────────────
+      - type: entities
+        title: "Template Binary Sensors (derived state)"
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.apple_tv_active
+            name: Apple TV Active
+          - entity: binary_sensor.chromecast_active
+            name: Chromecast Active
+          - entity: binary_sensor.playstation_5_active
+            name: PlayStation 5 Active
+          - entity: binary_sensor.fire_tv_stick_active
+            name: Fire TV Stick Active
+          - entity: sensor.active_source_label
+            name: Active Source Label (sensor)
+
+      # ── History graph — visualizes state over time ─────────────
+      - type: history-graph
+        title: "Source & Power History (Last Hour)"
+        hours_to_show: 1
+        entities:
+          - entity: input_select.active_source
+          - entity: input_boolean.tv_power
+          - entity: input_boolean.avr_power
+
+
+      - type: logbook
+        title: "State Change Logbook"
+        hours_to_show: 1
+        entities:
+          - input_select.active_source
+          - input_boolean.tv_power
+          - input_boolean.avr_power
+          - input_number.avr_volume

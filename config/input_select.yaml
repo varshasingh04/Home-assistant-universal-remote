@@ -1,0 +1,9 @@
+active_source:
+  name: Active Source
+  options:
+    - Apple TV
+    - Chromecast
+    - PlayStation 5
+    - Fire TV Stick
+  initial: Apple TV
+  icon: mdi:remote-tv

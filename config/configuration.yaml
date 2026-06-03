@@ -1,0 +1,28 @@
+homeassistant:
+  name: Universal Remote Lab
+  unit_system: metric
+  time_zone: UTC
+
+default_config:
+
+# ── State layer ──────────────────────────────────────────────────────────────
+input_select: !include input_select.yaml
+input_boolean: !include input_boolean.yaml
+input_number: !include input_number.yaml
+
+# ── Derived state (template sensors / binary sensors) ────────────────────────
+template: !include template.yaml
+
+# ── Logic layer ───────────────────────────────────────────────────────────────
+script: !include scripts.yaml
+automation: !include automations.yaml
+
+# ── Custom YAML dashboard ─────────────────────────────────────────────────────
+lovelace:
+  dashboards:
+    universal-remote:
+      mode: yaml
+      title: Universal Remote
+      filename: lovelace/remote_dashboard.yaml
+      show_in_sidebar: true
+      require_admin: false

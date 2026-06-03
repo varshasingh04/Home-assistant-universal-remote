@@ -1,0 +1,36 @@
+
+- sensor:
+    - name: "Active Source Label"
+      unique_id: active_source_label
+      state: "{{ states('input_select.active_source') }}"
+      icon: mdi:television-play
+
+
+- binary_sensor:
+    - name: "Apple TV Active"
+      unique_id: apple_tv_active
+      state: >
+        {{ is_state('input_select.active_source', 'Apple TV')
+           and is_state('input_boolean.tv_power', 'on') }}
+      icon: mdi:apple
+
+    - name: "Chromecast Active"
+      unique_id: chromecast_active
+      state: >
+        {{ is_state('input_select.active_source', 'Chromecast')
+           and is_state('input_boolean.tv_power', 'on') }}
+      icon: mdi:cast
+
+    - name: "PlayStation 5 Active"
+      unique_id: playstation_5_active
+      state: >
+        {{ is_state('input_select.active_source', 'PlayStation 5')
+           and is_state('input_boolean.tv_power', 'on') }}
+      icon: mdi:sony-playstation
+
+    - name: "Fire TV Stick Active"
+      unique_id: fire_tv_stick_active
+      state: >
+        {{ is_state('input_select.active_source', 'Fire TV Stick')
+           and is_state('input_boolean.tv_power', 'on') }}
+      icon: mdi:amazon

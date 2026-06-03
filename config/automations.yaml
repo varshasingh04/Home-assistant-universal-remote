@@ -1,0 +1,44 @@
+
+- id: avr_follows_tv_off
+  alias: "AVR powers off with TV"
+  description: "Keeps AVR in sync — if there's no picture, there's no audio"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tv_power
+      to: "off"
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.avr_power
+
+
+- id: avr_follows_tv_on
+  alias: "AVR powers on with TV"
+  description: "Auto-powers AVR so audio is ready immediately when TV turns on"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.tv_power
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.avr_power
+      state: "off"
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.avr_power
+
+
+- id: source_change_notify
+  alias: "Log source change"
+  description: "Fires on every source switch — visible in Logbook on the debug view"
+  trigger:
+    - platform: state
+      entity_id: input_select.active_source
+  action:
+    - service: logbook.log
+      data:
+        name: "Universal Remote"
+        message: >
+          Source switched to {{ states('input_select.active_source') }}
+        entity_id: input_select.active_source
