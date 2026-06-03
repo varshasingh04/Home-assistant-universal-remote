@@ -3,6 +3,8 @@
 A mock universal remote dashboard built on Home Assistant OS running in VirtualBox.
 Demonstrates entity modeling, state-driven UI, and automation logic without real hardware.
 
+![Universal Remote Dashboard](screenshots/02_remote_control_view.png)
+
 ---
 
 ## Architecture
